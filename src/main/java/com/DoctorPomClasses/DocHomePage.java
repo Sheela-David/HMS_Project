@@ -9,6 +9,9 @@ import org.openqa.selenium.support.PageFactory;
 public class DocHomePage {
 	
 	WebDriver driver;
+	@FindBy(xpath = "//h1[text()='Doctor | Dashboard']")
+	private WebElement dashboard;
+	
 	@FindBy(xpath = "(//a[@href='edit-profile.php'])[2]")
 	private WebElement updateProfile;
 	
@@ -69,6 +72,12 @@ public class DocHomePage {
 	public By getPatientListTable() {
 		return patientListTable;
 	}
+
+	public WebElement getDashboard() {
+		return dashboard;
+	}
+	
+	
 	
 	
 

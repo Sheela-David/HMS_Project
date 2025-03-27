@@ -23,30 +23,21 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import com.DoctorPomClasses.DocHomePage;
 import com.DoctorPomClasses.DoctorLogin;
+import com.generic.fileUtility.BaseClass;
 
-public class DocViewAppointmentTest {
+public class DocViewAppointmentTest extends BaseClass{
 	
-
-    WebDriver driver;
     DoctorLogin dLog;
-
-    @BeforeClass
-    public void setUp() {
-        ChromeOptions cp = new ChromeOptions();
-        cp.addArguments("--disable-notifications");
-        driver = new ChromeDriver(cp);
-        driver.manage().window().maximize();
-        dLog = new DoctorLogin(driver);
-    }
 
     @Test(groups = "Smoke")
     public void loginAsDoctor() throws Throwable {
+    	DoctorLogin dLog = new DoctorLogin(driver);
         dLog.doctorLogin();
         Thread.sleep(3000);
-
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        WebElement homepage = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h1[text()='Doctor | Dashboard']")));
+        DocHomePage dHome = new DocHomePage(driver);
+        WebElement homepage = dHome.getDashboard();
         Assert.assertTrue(homepage.isDisplayed(), "Doctor Dashboard is not displayed");
     }
 
@@ -101,12 +92,7 @@ public class DocViewAppointmentTest {
                 System.out.println("JavaScript click failed.");
             }
         }
-    }
-
-    @AfterClass
-    public void logout()  {
         dLog.doctorLogout();
-        driver.quit();
-    }    
+    }  
 
 }

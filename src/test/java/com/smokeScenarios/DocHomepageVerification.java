@@ -1,46 +1,26 @@
 package com.smokeScenarios;
-
-import java.time.Duration;
-
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import com.DoctorPomClasses.DocHomePage;
 import com.DoctorPomClasses.DoctorLogin;
+import com.generic.fileUtility.BaseClass;
 
-public class DocHomepageVerification {
+public class DocHomepageVerification extends BaseClass{
 	
-	  WebDriver driver;
 	  DoctorLogin dLog;
-
-	    @BeforeClass
-	    public void setUp() {
-	        driver = new ChromeDriver();
-	        
-	        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-	        driver.manage().window().maximize();
-	        dLog = new DoctorLogin(driver); 
-	    }
 
 	    @Test(groups = "Smoke")
 	    public void loginAsDoctor() throws Throwable {
+	    	dLog = new DoctorLogin(driver);
 	        dLog.doctorLogin();
-	        WebElement homepage = driver.findElement(By.xpath("//h1[text()='Doctor | Dashboard']"));
+	        DocHomePage dHome = new DocHomePage(driver);
+	        WebElement homepage = dHome.getDashboard();
 	        Assert.assertTrue(homepage.isDisplayed(), "Doctor Dashboard is not displayed");
 	        
-	        System.out.println("✅ Homepage verification is successful.");
-	    }
-
-	    @AfterClass
-	    public void logout() {
-	        dLog.doctorLogout(); 
-	        driver.quit(); 
-	        System.out.println("✅ Browser closed successfully.");
+	        System.out.println("Homepage verification is successful.");
+	        dLog.doctorLogout();
 	    }
 
 }
